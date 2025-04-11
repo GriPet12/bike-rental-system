@@ -1,0 +1,29 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: api-gateway
+
+  cloud:
+    gateway:
+      routes:
+        - id: service-account
+          uri: http://service-account:8081
+          predicates:
+            - Path=/account/**
+
+        - id: service-bike
+          uri: http://service-bike:8082
+          predicates:
+            - Path=/bike/**
+
+        - id: service-map
+          uri: http://service-map:8083
+          predicates:
+            - Path=/map/**
+
+        - id: service-payment
+          uri: http://service-payment:8084
+          predicates:
+            - Path=/payment/**
