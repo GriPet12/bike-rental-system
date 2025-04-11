@@ -1,5 +1,23 @@
 # City bike rental management system
 ## [C4 Model](https://drive.google.com/file/d/1B0YqFhIPC5O9Iab_oIx6Y92gEqxcaK4J/view?usp=sharing)
+
+## Main components:
+- **API Gateway (Spring Cloud Gateway)**: Proxy requests to different microservices.
+- **Service Account**: Manages user registration, authentication, and profile management.
+- **Service Bike**: Responsible for managing bicycles, their status and availability.
+- **Service Map**: Displays the location of bicycles and tracks them in real time.
+- **Service Payment**: Manages payments, including calculating rental costs and processing transactions.
+- **Kafka**: Mechanism for exchanging events between services.
+- **Vue.js**: A front-end framework for displaying the user interface and interacting with microservices.
+
+## Technologies
+- Spring Boot 3.4.4
+- Spring Cloud Gateway
+- Kafka
+- Docker
+- Maven
+- Vue.js
+
 ### Functional Requirements:
 
 **User:**
