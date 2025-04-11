@@ -18,7 +18,7 @@
 - Maven
 - Vue.js
 
-### Functional Requirements:
+## Functional Requirements:
 
 **User:**
 - Can register an account in the system
