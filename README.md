@@ -5,7 +5,7 @@
 - **API Gateway (Spring Cloud Gateway)**: Proxy requests to different microservices.
 - **Service Account**: Manages user registration, authentication, and profile management.
 - **Service Bike**: Responsible for managing bicycles, their status and availability.
-- **Service Map**: Displays the location of bicycles and tracks them in real time.
+- **Service Location**: Displays the location of bicycles and tracks them in real time.
 - **Service Payment**: Manages payments, including calculating rental costs and processing transactions.
 - **Kafka**: Mechanism for exchanging events between services.
 - **Vue.js**: A front-end framework for displaying the user interface and interacting with microservices.
