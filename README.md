@@ -24,7 +24,6 @@
 - Can register an account in the system
 - Can log in and log out of the system
 - Can view available bikes on the map
-- Can rent a bike by scanning a QR code
 - Can end rental and return a bike at any station
 - Can view personal rental history
 - Can view current rental status and time
