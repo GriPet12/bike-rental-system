@@ -19,11 +19,6 @@ services:
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
   
   api-gateway:
-    build: api-gateway
+    build: ./backend/api-gateway
     ports:
       - "8080:8080"
-    depends_on:
-      - service-account
-      - service-bike
-      - service-map
-      - service-payment
