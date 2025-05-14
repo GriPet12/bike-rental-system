@@ -19,6 +19,28 @@ services:
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
   
   api-gateway:
-    build: ./backend/api-gateway
+    image: api-gateway-image
     ports:
       - "8080:8080"
+
+#  user-service:
+#    image: user-service-image
+#    ports:
+#      - "8081:8081"
+
+  db:
+    image: postgres:16
+    container_name: postgres-db
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: user_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
+

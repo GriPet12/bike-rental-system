@@ -58,6 +58,14 @@
 			<artifactId>spring-cloud-starter-gateway</artifactId>
 			<version>4.2.2</version>
 		</dependency>
+
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>
+			<version>4.11.0</version> <!-- або новіше, але не 5.x -->
+			<scope>test</scope>
+		</dependency>
+
 	</dependencies>
 
 	<build>
@@ -65,7 +73,18 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<imageName>api-gateway-image</imageName>
+				</configuration>
 			</plugin>
+<!--			<plugin>-->
+<!--				<groupId>org.apache.maven.plugins</groupId>-->
+<!--				<artifactId>maven-surefire-plugin</artifactId>-->
+<!--				<version>3.1.2</version> &lt;!&ndash; Актуальна версія &ndash;&gt;-->
+<!--				<configuration>-->
+<!--					<argLine>-javaagent:/home/user/.m2/repository/org/mockito/mockito-inline/5.14.2/mockito-inline-5.14.2.jar</argLine>-->
+<!--				</configuration>-->
+<!--			</plugin>-->
 		</plugins>
 	</build>
 
