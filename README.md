@@ -7,8 +7,8 @@
 - **Service Bike**: Responsible for managing bicycles, their status and availability.
 - **Service Location**: Displays the location of bicycles and tracks them in real time.
 - **Service Payment**: Manages payments, including calculating rental costs and processing transactions.
+- **Service UI**: A front-end framework for displaying the user interface and interacting with microservices.
 - **Kafka**: Mechanism for exchanging events between services.
-- **Vue.js**: A front-end framework for displaying the user interface and interacting with microservices.
 
 ## Technologies
 - Spring Boot 3.4.4
@@ -16,7 +16,6 @@
 - Kafka
 - Docker
 - Maven
-- Vue.js
 
 ## Functional Requirements:
 
