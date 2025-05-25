@@ -66,4 +66,14 @@ public class UserService {
     }
 
 
+    public void changePassword(int userId, String newPassword) {
+        User user = userRepository.findById(userId).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Wrong ID"));
+
+        String hashed_password = passwordEncoder.encode(newPassword);
+        user.setPassword(hashed_password);
+        userRepository.save(user);
+    }
+
 }
+

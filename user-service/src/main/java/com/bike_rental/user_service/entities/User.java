@@ -35,4 +35,8 @@ public class User {
     }
     public String getEmail() { return  this.email; }
 
+    public void setPassword(String hashedPassword) {
+        this.password = hashedPassword;
+    }
+
 }

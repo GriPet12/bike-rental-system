@@ -52,4 +52,10 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
+    @PutMapping("{id}/password")
+    public ResponseEntity<Void> changePassword(@PathVariable("id") int userId, @RequestBody String newPassword){
+        userService.changePassword(userId, newPassword);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
 }
