@@ -1,6 +1,7 @@
 package com.bike_rental.location_service.controllers;
 
 import com.bike_rental.location_service.DTO.RouteDTO;
+import com.bike_rental.location_service.DTO.RouteRequest;
 import com.bike_rental.location_service.services.RouteService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,9 +30,8 @@ public class RouteController {
     }
 
     @PostMapping
-    public ResponseEntity<Integer> startRoute(@RequestParam("user_id") int userId, @RequestParam("bike_id") int bikeId,
-                                              @RequestParam("head_location_id") int locationId){
-        int id = routeService.createRoute(userId, bikeId, locationId);
+    public ResponseEntity<Integer> startRoute(@RequestBody RouteRequest routeRequest){
+        int id = routeService.createRoute(routeRequest.userId(), routeRequest.bikeId(), routeRequest.firstLocationId());
         return ResponseEntity.status(HttpStatus.CREATED).body(id);
     }
 

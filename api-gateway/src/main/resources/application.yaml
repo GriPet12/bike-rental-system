@@ -8,20 +8,20 @@ spring:
   cloud:
     gateway:
       routes:
-        - id: service-account
+        - id: user-service
           uri: http://service-account:8081
           predicates:
-            - Path=/account/**
+            - Path=/user/**
+
+        - id: location-service
+          uri: http://sesrvice-bike:8082
+          predicates:
+            - Path=/bikeLocation/**
 
         - id: service-bike
-          uri: http://service-bike:8082
-          predicates:
-            - Path=/bike/**
-
-        - id: service-map
           uri: http://service-map:8083
           predicates:
-            - Path=/map/**
+            - Path=/bike/**
 
         - id: service-payment
           uri: http://service-payment:8084

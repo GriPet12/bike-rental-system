@@ -91,7 +91,7 @@ public class RouteService {
             routeRepository.flush();
         }
         else{
-            throw  new ResponseStatusException(HttpStatus.NOT_FOUND, "Wrong route id");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Wrong route id");
         }
     }
 

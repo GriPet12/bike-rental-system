@@ -1,6 +1,7 @@
 package com.bike_rental.location_service.services;
 
 import com.bike_rental.location_service.DTO.BikeLocationDto;
+import com.bike_rental.location_service.DTO.BikeLocationEvent;
 import com.bike_rental.location_service.DTO.BikeLocationRequest;
 import com.bike_rental.location_service.entities.BikeLocation;
 import com.bike_rental.location_service.repositories.BikeLocationRepository;
@@ -15,11 +16,13 @@ public class LocationService {
     final private BikeLocationRepository bikeLocationRepository;
     final private RouteRepository routeRepository;
     final private RouteService routeService;
+    final private KafkaProducer producer;
 
-    public LocationService(BikeLocationRepository bikeLocationRepository, RouteRepository routeRepository, RouteService routeService) {
+    public LocationService(BikeLocationRepository bikeLocationRepository, RouteRepository routeRepository, RouteService routeService, KafkaProducer producer) {
         this.bikeLocationRepository = bikeLocationRepository;
         this.routeRepository = routeRepository;
         this.routeService = routeService;
+        this.producer = producer;
     }
 
     public BikeLocationDto getDTO(BikeLocation location){
@@ -43,13 +46,15 @@ public class LocationService {
     }
 
     public void addBikeLocation(BikeLocationRequest locationRequest) {
-        BikeLocation location = new BikeLocation(locationRequest.latitude(), locationRequest.longitude());
+            BikeLocation location = new BikeLocation(locationRequest.latitude(), locationRequest.longitude());
         location = bikeLocationRepository.save(location);
 
         int bikeId = locationRequest.bikeId();
         if(routeRepository.existsByBikeId(bikeId)){
             routeService.updateRoute(bikeId, location);
         }
+
+        producer.pushBikeLocation(new BikeLocationEvent(location.id, bikeId, locationRequest.latitude(), locationRequest.longitude()));
 
     }
 
