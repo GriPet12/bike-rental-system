@@ -31,8 +31,8 @@ public class JwtUtil {
         }
 
         return Jwts.builder()
-                .setSubject(user.getUsername())
                 .setClaims(claims)
+                .setSubject(user.getUsername())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 1000))
                 .signWith(key)

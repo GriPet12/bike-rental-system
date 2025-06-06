@@ -56,19 +56,18 @@ public class UserService {
         return toDTO(user);
     }
 
-    public void deleteUser(int id){
-        if(userRepository.existsById(id)){
-            userRepository.deleteById(id);
-        }
-        else{
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-        }
+    public void deleteUser(String username){
+        User user = userRepository.findByUsername(username).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Wrong username")
+        );
+
+        userRepository.deleteById(user.getId());
     }
 
 
-    public void changePassword(int userId, String newPassword) {
-        User user = userRepository.findById(userId).orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Wrong ID"));
+    public void changePassword(String username, String newPassword) {
+        User user = userRepository.findByUsername(username).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Wrong username"));
 
         String hashed_password = passwordEncoder.encode(newPassword);
         user.setPassword(hashed_password);

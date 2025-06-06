@@ -6,7 +6,12 @@ import com.bike_rental.user_service.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/user")
@@ -20,7 +25,8 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<UserDTO> get(@RequestParam(required = false) String username, @RequestParam(required = false) String email){
+    public ResponseEntity<UserDTO> get(@RequestParam(required = false) String username,
+                                       @RequestParam(required = false) String email){
         UserDTO user;
         if(username != null) {
             user = userService.getUser(username);
@@ -41,20 +47,46 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> register(@RequestBody UserRequest user){
-        userService.registerUser(user);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+    public ResponseEntity<Void> register(@AuthenticationPrincipal UserDetails userDetails,
+                                         @RequestBody UserRequest user){
+        if(userDetails != null) {
+            String role = userDetails.getAuthorities().stream().findFirst().map(GrantedAuthority::getAuthority).orElse(null);
+            //Зареєструвати адміна може тільки адмін
+            if (Objects.equals(user.role().toString(), "ADMIN") && (!Objects.equals(role, "ADMIN"))) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+            } else {
+                userService.registerUser(user);
+                return ResponseEntity.status(HttpStatus.CREATED).build();
+            }
+        }
+
+        else if(Objects.equals(user.role().toString(), "USER")){
+            userService.registerUser(user);
+            return ResponseEntity.status(HttpStatus.CREATED).build();
+        }
+
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
     }
 
-    @DeleteMapping("{id}")
-    public ResponseEntity<Void> delete(@PathVariable("id") int userId){
-        userService.deleteUser(userId);
+    @DeleteMapping("{username}")
+    public ResponseEntity<Void> delete(@AuthenticationPrincipal UserDetails userDetails,
+                                       @PathVariable("username") String username){
+        String role = userDetails.getAuthorities().stream().findFirst().map(GrantedAuthority::getAuthority).orElse(null);
+        if(Objects.equals(role, "USER") && !Objects.equals(userDetails.getUsername(), username)){
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+        userService.deleteUser(username);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
-    @PutMapping("{id}/password")
-    public ResponseEntity<Void> changePassword(@PathVariable("id") int userId, @RequestBody String newPassword){
-        userService.changePassword(userId, newPassword);
+    @PutMapping("{username}/password")
+    public ResponseEntity<Void> changePassword(@AuthenticationPrincipal UserDetails userDetails,
+                                               @PathVariable("username") String username, @RequestBody String newPassword){
+        String role = userDetails.getAuthorities().stream().findFirst().map(GrantedAuthority::getAuthority).orElse(null);
+        if(Objects.equals(role, "USER") && !Objects.equals(userDetails.getUsername(), username)){
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+        userService.changePassword(username, newPassword);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
